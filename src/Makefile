@@ -18,3 +18,8 @@ clean :
 	rm -rf ../build/main
 
 rebuild : clean all
+
+style-format : 
+	mv ../linters/.clang-format .
+	clang-format -i *.c *.h
+	mv .clang-format ../linters/.clang-format
