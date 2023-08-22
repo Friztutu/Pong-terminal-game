@@ -55,7 +55,7 @@ void run() {
 }
 
 void botMove(Player *first_player, Ball ball) {
-    if (ball.speed_x > 0 || rand() % 70 == 10) return;
+    if (ball.speed_x > 0 || rand() % 50 == 10) return;
 
     if (first_player->racket_pos + 1 > ball.y) {
         first_player->racket_pos != 2 ? first_player->racket_pos -= 1 : first_player->racket_pos;

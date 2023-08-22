@@ -1,6 +1,6 @@
 CC=gcc
-CFLAGS=-std=c11
-LDFLAGS=-c $(CFLAGS)
+CFLAGS=-std=c11 -Wall -Wextra -Werror
+LDFLAGS=-c -std=c11 -Wall -Wextra -Werror $(CFLAGS)
 
 all : for_one for_two
 
