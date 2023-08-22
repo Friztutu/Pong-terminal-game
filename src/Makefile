@@ -3,7 +3,7 @@ CFLAGS=-std=c11
 LDFLAGS=-c $(CFLAGS)
 CFTESTFLAGS=-Wall -Wextra -Werror -fsanitize=address -std=c11
 
-all : main
+all : main test
 
 main : main.o pong.o render.o
 	$(CC) $(CFLAGS) ../build/main.o ../build/pong.o ../build/render.o -lncurses -o ../build/main
@@ -19,7 +19,7 @@ render.o : render.c
 
 clean : 
 	rm -rf ../build/*.o 
-	rm -rf ../build/main
+	rm -rf ../build/*main
 
 rebuild : clean all
 

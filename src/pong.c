@@ -15,25 +15,35 @@ void run() {
     int exit_flag = false;
     int ms = 75;
     char buffer[100];
-    render(ball, first_player, second_player);
+    int count_move = 0;
+    render(ball, first_player, second_player, ms);
 
     do {
-        delay(ms);
+        delay(ms - count_move / 100);
         char player_input = getch();
         validatePlayerInput(&first_player, &second_player, &exit_flag, player_input);
         moveBall(&ball, first_player, second_player);
-        render(ball, first_player, second_player);
+        render(ball, first_player, second_player, ms - count_move / 30);
 
         if (isGoalFirstPl(ball)) {
             first_player.score += 1;
             setUp(&ball, &first_player, &second_player);
+            count_move = 0;
         } else if (isGoalSecondPl(ball)) {
             second_player.score += 1;
             setUp(&ball, &first_player, &second_player);
+            count_move = 0;
         }
 
         scanw("%s", buffer);
+        count_move++;
     } while (!isEndGame(first_player, second_player) && !exit_flag);
+    nodelay(stdscr, false);
+    clear();
+    mvprintw(12, 30, "The End. Press Enter to exit.");
+    refresh();
+    while (getch() != '\n') {
+    };
     endwin();
 }
 
@@ -44,8 +54,8 @@ int isGoalSecondPl(Ball ball) { return ball.x == 1; }
 void setUp(Ball *ball, Player *first_player, Player *second_player) {
     ball->x = 39;
     ball->y = 12;
-    ball->speed_x = 1;
-    ball->speed_y = 1;
+    ball->speed_x *= -1;
+    ball->speed_y *= -1;
     first_player->racket_pos = 13;
     second_player->racket_pos = 13;
 }
