@@ -14,18 +14,15 @@ void run() {
     Player first_player = {13, 0}, second_player = {13, 0};
     int exit_flag = false;
     int ms = 75;
-    clear();
+    char buffer[100];
     render(ball, first_player, second_player);
-    refresh();
 
     do {
         delay(ms);
         char player_input = getch();
         validatePlayerInput(&first_player, &second_player, &exit_flag, player_input);
         moveBall(&ball, first_player, second_player);
-        clear();
         render(ball, first_player, second_player);
-        refresh();
 
         if (isGoalFirstPl(ball)) {
             first_player.score += 1;
@@ -35,7 +32,7 @@ void run() {
             setUp(&ball, &first_player, &second_player);
         }
 
-        fflush(stdin);
+        scanw("%s", buffer);
     } while (!isEndGame(first_player, second_player) && !exit_flag);
     endwin();
 }

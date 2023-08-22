@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "pong.h"
+#include "render.h"
 
 int main(void) {
     run();

@@ -5,11 +5,13 @@
 #include "pong.h"
 
 void render(Ball ball, Player player_one, Player player_two) {
+    clear();
     renderField();
     renderScore(player_one, player_two);
     renderRackets(player_one, player_two);
     renderBall(ball);
     renderBar();
+    refresh();
 }
 
 void renderField() {
@@ -38,10 +40,8 @@ void renderBar() {
 }
 
 void renderRackets(Player player_one, Player player_two) {
-    mvprintw(player_one.racket_pos - 1, 2, "|");
-    mvprintw(player_one.racket_pos, 2, "|");
-    mvprintw(player_one.racket_pos + 1, 2, "|");
-    mvprintw(player_two.racket_pos - 1, 77, "|");
-    mvprintw(player_two.racket_pos, 77, "|");
-    mvprintw(player_two.racket_pos + 1, 77, "|");
+    for (int i = -1; i < 2; i++) {
+        mvprintw(player_one.racket_pos + i, 2, "|");
+        mvprintw(player_two.racket_pos + i, 77, "|");
+    }
 }
