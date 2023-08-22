@@ -9,6 +9,7 @@
 
 void run() {
     initCurses();
+    srand(time(NULL));
 
     Ball ball = {39, 12, 1, 1};
     Player first_player = {13, 0}, second_player = {13, 0};
@@ -54,9 +55,11 @@ void run() {
 }
 
 void botMove(Player *first_player, Ball ball) {
-    if (first_player->racket_pos + 1 > ball.y && ball.speed_x < 0) {
+    if (ball.speed_x > 0 || rand() % 70 == 10) return;
+
+    if (first_player->racket_pos + 1 > ball.y) {
         first_player->racket_pos != 2 ? first_player->racket_pos -= 1 : first_player->racket_pos;
-    } else if (first_player->racket_pos - 1 < ball.y && ball.speed_x < 0) {
+    } else if (first_player->racket_pos - 1 < ball.y) {
         first_player->racket_pos != 22 ? first_player->racket_pos += 1 : first_player->racket_pos;
     }
 }
