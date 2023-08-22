@@ -22,6 +22,10 @@ typedef struct player_obj {
     int score;
 } Player;
 
+void botMove(Player *first_player, Ball ball);
+
+void playerMove(Player *second_player, int *exit_flag, char player_input);
+
 void setUp(Ball *ball, Player *first_player, Player *second_player);
 
 int isGoalFirstPl(Ball ball);

@@ -1,15 +1,14 @@
 CC=gcc
 CFLAGS=-std=c11
 LDFLAGS=-c $(CFLAGS)
-CFTESTFLAGS=-Wall -Wextra -Werror -fsanitize=address -std=c11
 
-all : main test
+all : for_one for_two
 
-main : main.o pong.o render.o
-	$(CC) $(CFLAGS) ../build/main.o ../build/pong.o ../build/render.o -lncurses -o ../build/main
+for_two : main.o pong.o render.o
+	$(CC) $(CFLAGS) ../build/main.o ../build/pong.o ../build/render.o -lncurses -o ../build/for_two
 
 pong.o : pong.c
-	$(CC) $(LDFLAGS) pong.c -lncurses -o ../build/pong.o
+	$(CC) $(LDFLAGS) -DTWO pong.c -lncurses -o ../build/pong.o
 
 main.o : main.c
 	$(CC) $(LDFLAGS) main.c -lncurses -o ../build/main.o
@@ -17,9 +16,14 @@ main.o : main.c
 render.o : render.c
 	$(CC) $(LDFLAGS) render.c -lncurses -o ../build/render.o
 
+for_one : main.o pong_s.o render.o
+	$(CC) $(CFLAGS) ../build/main.o ../build/pong_s.o ../build/render.o -lncurses -o ../build/for_one
+
+pong_s.o : pong.c
+	$(CC) $(LDFLAGS) pong.c -lncurses -o ../build/pong_s.o
+
 clean : 
-	rm -rf ../build/*.o 
-	rm -rf ../build/*main
+	rm -rf ../build/*
 
 rebuild : clean all
 
@@ -33,7 +37,3 @@ test :
 	clang-format -n *.c *.h
 	mv .clang-format ../linters/.clang-format
 	cppcheck --enable=all --suppress=missingIncludeSystem *.c *.h
-	$(CC) -c $(CFTESTFLAGS) pong.c -lncurses -o ../build/pong_test.o
-	$(CC) -c $(CFTESTFLAGS) main.c -lncurses -o ../build/main_test.o
-	$(CC) -c $(CFTESTFLAGS) render.c -lncurses -o ../build/render_test.o
-	$(CC) $(CFTESTFLAGS) ../build/main_test.o ../build/pong_test.o ../build/render_test.o -lncurses -o ../build/test_main
