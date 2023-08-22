@@ -9,32 +9,80 @@
 
 void run() {
     initCurses();
+    srand(time(NULL));
 
     Ball ball = {39, 12, 1, 1};
     Player first_player = {13, 0}, second_player = {13, 0};
     int exit_flag = false;
     int ms = 75;
     char buffer[100];
-    render(ball, first_player, second_player);
+    int count_move = 0;
+    render(ball, first_player, second_player, ms);
 
     do {
-        delay(ms);
+        int speed = (ms - count_move / 50) > 10 ? ms - count_move / 50 : 10;
+        delay(speed);
         char player_input = getch();
+#ifdef TWO
         validatePlayerInput(&first_player, &second_player, &exit_flag, player_input);
+#else
+        playerMove(&second_player, &exit_flag, player_input);
+        botMove(&first_player, ball);
+#endif
         moveBall(&ball, first_player, second_player);
-        render(ball, first_player, second_player);
+        render(ball, first_player, second_player, ms - count_move / 30);
 
         if (isGoalFirstPl(ball)) {
             first_player.score += 1;
             setUp(&ball, &first_player, &second_player);
+            count_move = 0;
         } else if (isGoalSecondPl(ball)) {
             second_player.score += 1;
             setUp(&ball, &first_player, &second_player);
+            count_move = 0;
         }
 
         scanw("%s", buffer);
+        count_move++;
     } while (!isEndGame(first_player, second_player) && !exit_flag);
+    nodelay(stdscr, false);
+    clear();
+    mvprintw(12, 30, "The End. Press Enter to exit.");
+    refresh();
+    while (getch() != '\n') {
+    };
     endwin();
+}
+
+void botMove(Player *first_player, Ball ball) {
+    if (ball.speed_x > 0 || rand() % 50 == 10) return;
+
+    if (first_player->racket_pos + 1 > ball.y) {
+        first_player->racket_pos != 2 ? first_player->racket_pos -= 1 : first_player->racket_pos;
+    } else if (first_player->racket_pos - 1 < ball.y) {
+        first_player->racket_pos != 22 ? first_player->racket_pos += 1 : first_player->racket_pos;
+    }
+}
+
+void playerMove(Player *second_player, int *exit_flag, char player_input) {
+    switch (player_input) {
+        case MOVE_UP_BOTTON_PL2:
+        case MOVE_UP_BOTTON_PL2 - 32:
+            second_player->racket_pos != 2 ? second_player->racket_pos -= 1 : second_player->racket_pos;
+            break;
+
+        case MOVE_DOWN_BOTTON_PL2:
+        case MOVE_DOWN_BOTTON_PL2 - 32:
+            second_player->racket_pos != 22 ? second_player->racket_pos += 1 : second_player->racket_pos;
+            break;
+
+        case EXIT_BOTTON_CODE:
+            *exit_flag = true;
+            break;
+
+        default:
+            break;
+    }
 }
 
 int isGoalFirstPl(Ball ball) { return ball.x == 78; }
@@ -44,8 +92,8 @@ int isGoalSecondPl(Ball ball) { return ball.x == 1; }
 void setUp(Ball *ball, Player *first_player, Player *second_player) {
     ball->x = 39;
     ball->y = 12;
-    ball->speed_x = 1;
-    ball->speed_y = 1;
+    ball->speed_x *= -1;
+    ball->speed_y *= -1;
     first_player->racket_pos = 13;
     second_player->racket_pos = 13;
 }
