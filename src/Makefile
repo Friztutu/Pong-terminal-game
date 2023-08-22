@@ -1,20 +1,23 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -Werror -lncurses -fsanitize=address
+CFLAGS=-std=c11
 LDFLAGS=-c $(CFLAGS)
 
 all : main
 
-main : main.o pong.o
-	$(CC) $(CFLAGS) ../build/main.o ../build/pong.o -o ../build/main
+main : main.o pong.o render.o
+	$(CC) $(CFLAGS) ../build/main.o ../build/pong.o ../build/render.o -lncurses -o ../build/main
 
 pong.o : pong.c
-	$(CC) $(LDFLAGS) pong.c -o ../build/pong.o
+	$(CC) $(LDFLAGS) pong.c -lncurses -o ../build/pong.o
 
 main.o : main.c
-	$(CC) $(LDFLAGS) main.c -o ../build/main.o
+	$(CC) $(LDFLAGS) main.c -lncurses -o ../build/main.o
+
+render.o : render.c
+	$(CC) $(LDFLAGS) render.c -lncurses -o ../build/render.o
 
 clean : 
-	rm -rf *.o 
+	rm -rf ../build/*.o 
 	rm -rf ../build/main
 
 rebuild : clean all
