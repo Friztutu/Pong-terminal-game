@@ -13,13 +13,20 @@
 typedef struct ball_obj {
     int x;
     int y;
-    int speed;
+    int speed_x;
+    int speed_y;
 } Ball;
 
 typedef struct player_obj {
     int racket_pos;
     int score;
 } Player;
+
+void setUp(Ball *ball, Player *first_player, Player *second_player);
+
+int isGoalFirstPl(Ball ball);
+
+int isGoalSecondPl(Ball ball);
 
 void run();
 
@@ -34,5 +41,7 @@ int isWallPuchBall(Ball ball);
 int isPlayerPuchBall(Ball ball, Player first_player, Player second_player);
 
 void moveBall(Ball *ball, Player first_player, Player second_player);
+
+void delay(unsigned int msecs);
 
 #endif
