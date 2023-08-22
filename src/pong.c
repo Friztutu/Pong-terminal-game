@@ -14,6 +14,7 @@ void run() {
     Player first_player = {13, 0}, second_player = {13, 0};
     int exit_flag = false;
     int ms = 75;
+    char buffer[100];
     clear();
     render(ball, first_player, second_player);
     refresh();
@@ -34,8 +35,8 @@ void run() {
             second_player.score += 1;
             setUp(&ball, &first_player, &second_player);
         }
-
-        fflush(stdin);
+        
+        scanw("%s", buffer);
     } while (!isEndGame(first_player, second_player) && !exit_flag);
     endwin();
 }
