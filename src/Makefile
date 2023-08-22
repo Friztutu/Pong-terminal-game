@@ -1,0 +1,28 @@
+CC=gcc
+CFLAGS=-std=c11
+LDFLAGS=-c $(CFLAGS)
+
+all : main
+
+main : main.o pong.o render.o
+	$(CC) $(CFLAGS) ../build/main.o ../build/pong.o ../build/render.o -lncurses -o ../build/main
+
+pong.o : pong.c
+	$(CC) $(LDFLAGS) pong.c -lncurses -o ../build/pong.o
+
+main.o : main.c
+	$(CC) $(LDFLAGS) main.c -lncurses -o ../build/main.o
+
+render.o : render.c
+	$(CC) $(LDFLAGS) render.c -lncurses -o ../build/render.o
+
+clean : 
+	rm -rf ../build/*.o 
+	rm -rf ../build/main
+
+rebuild : clean all
+
+style-format : 
+	mv ../linters/.clang-format .
+	clang-format -i *.c *.h
+	mv .clang-format ../linters/.clang-format
