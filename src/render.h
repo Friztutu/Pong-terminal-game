@@ -1,5 +1,7 @@
-#include "pong.h"
+#ifndef RENDER
+#define RENDER
 
+#include "pong.h"
 
 // Base settings
 #define BALL_CHAR '*'
@@ -18,3 +20,4 @@ void renderBall(Ball ball);
 void renderBar();
 
 void renderRackets(Player player_one, Player player_two);
+#endif

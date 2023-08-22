@@ -1,7 +1,8 @@
-#include "pong.h"
 #include "render.h"
 
 #include <ncurses.h>
+
+#include "pong.h"
 
 void render(Ball ball, Player player_one, Player player_two) {
     renderField();
@@ -19,16 +20,14 @@ void renderField() {
         if (i % 2) mvprintw(i, 39, "|");
     }
     for (int i = 0; i < FIELD_SIZE_X; i++) mvprintw(24, i, "-");
-}   
+}
 
 void renderScore(Player player_one, Player player_two) {
-    mvprintw(5, 35, "%d", player_one.score);   
+    mvprintw(5, 35, "%d", player_one.score);
     mvprintw(5, 43, "%d", player_two.score);
 }
 
-void renderBall(Ball ball) {
-    mvprintw(ball.y, ball.x, "*");
-}
+void renderBall(Ball ball) { mvprintw(ball.y, ball.x, "*"); }
 
 void renderBar() {
     mvprintw(25, 0, "UP = a/A");
