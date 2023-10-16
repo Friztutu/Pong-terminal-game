@@ -107,7 +107,7 @@ void initCurses() {
 }
 
 int isEndGame(Player first_player, Player second_player) {
-    return first_player.score == 21 || second_player.score == 21;
+    return first_player.score == 1 || second_player.score == 1;
 }
 
 void validatePlayerInput(Player *first_player, Player *second_player, int *exit_flag, char player_input) {
